@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import prisma from './prisma/client.js'
+import { errorMiddleware } from './shared/middlware/error.middleware.js';
+import { NotFoundError } from './shared/errors/not-found-error.js';
 
 const app = express();
 
@@ -27,5 +29,11 @@ app.get('/test', async (_, res) => {
     data: users
   });
 });
+
+app.get('/error', async () => {
+  throw new NotFoundError('Product not found');
+});
+
+app.use(errorMiddleware);
 
 export default app;
